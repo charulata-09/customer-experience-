@@ -1,0 +1,17 @@
+{
+  "name": "customer-experience",
+  "version": "1.0.0",
+  "description": "CX Copilot - AI Customer Experience Platform",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "start": "npm start --prefix backend",
+    "dev": "npm run dev --prefix frontend",
+    "dev:backend": "npm run dev --prefix backend",
+    "test": "npm test --prefix backend"
+  }
+}
