@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Environment & credentials (never commit Gemini key or Supabase Service Role key)
+.env
+.env.*
+*.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Allow committing template
+!.env.example
+
+# Logs & diagnostic outputs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test & coverage
+coverage/
+.nyc_output/
+
+# Build artifacts
+dist/
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+[Dd]esktop.ini
+.vscode/
+.idea/

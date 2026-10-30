@@ -1,0 +1,257 @@
+{
+  "info": {
+    "_postman_id": "c7a84091-6451-4d1a-bf50-13f50247659a",
+    "name": "CX Copilot API Collection",
+    "description": "Production API endpoints for CX Copilot AI Customer Experience Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api/v1", "type": "string" },
+    { "key": "authToken", "value": "YOUR_SUPABASE_JWT_TOKEN", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Service Health Check",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Get Current Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Alex Johnson Updated\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tickets",
+      "item": [
+        {
+          "name": "Create Ticket (Triggers AI Triage)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domain\": \"ecommerce\",\n  \"channel\": \"web\",\n  \"subject\": \"Late delivery for wedding tomorrow morning\",\n  \"message\": \"My package was marked delivered at 3 PM but porch is completely empty! Wedding is tomorrow morning and this is urgent!\",\n  \"reference_id\": \"ORD-9821\",\n  \"preferred_contact\": \"email\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tickets", "host": ["{{baseUrl}}"], "path": ["tickets"] }
+          }
+        },
+        {
+          "name": "List Tickets with Filters",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/tickets?page=1&limit=10&status=open",
+              "host": ["{{baseUrl}}"],
+              "path": ["tickets"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "status", "value": "open" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Ticket Detail",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/tickets/:id", "host": ["{{baseUrl}}"], "path": ["tickets", ":id"] }
+          }
+        },
+        {
+          "name": "Add Message to Thread",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"body\": \"Checking back in on the delivery status.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tickets/:id/messages", "host": ["{{baseUrl}}"], "path": ["tickets", ":id", "messages"] }
+          }
+        },
+        {
+          "name": "Submit CSAT Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Fantastic support from the agent!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tickets/:id/csat", "host": ["{{baseUrl}}"], "path": ["tickets", ":id", "csat"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI Replies",
+      "item": [
+        {
+          "name": "Generate AI Reply Draft",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tone\": \"empathetic\",\n  \"include_compensation_suggestion\": true,\n  \"max_reply_words\": 160\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/tickets/:id/replies/generate", "host": ["{{baseUrl}}"], "path": ["tickets", ":id", "replies", "generate"] }
+          }
+        },
+        {
+          "name": "Edit Draft Text",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"draft_text\": \"Thank you for contacting us. We have expedited a replacement with guaranteed morning delivery.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/replies/:draftId", "host": ["{{baseUrl}}"], "path": ["replies", ":draftId"] }
+          }
+        },
+        {
+          "name": "Approve Draft & Publish to Thread",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status_after\": \"awaiting_customer\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/replies/:draftId/approve", "host": ["{{baseUrl}}"], "path": ["replies", ":draftId", "approve"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chat Assistant",
+      "item": [
+        {
+          "name": "Create Chat Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domain\": \"ecommerce\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/chat/sessions", "host": ["{{baseUrl}}"], "path": ["chat", "sessions"] }
+          }
+        },
+        {
+          "name": "Send Message to AI Assistant",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"How do I return an item?\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/chat/sessions/:id/messages", "host": ["{{baseUrl}}"], "path": ["chat", "sessions", ":id", "messages"] }
+          }
+        },
+        {
+          "name": "Escalate Chat to Human Ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Escalated Chat Support Request\",\n  \"preferred_contact\": \"in_app\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/chat/sessions/:id/escalate", "host": ["{{baseUrl}}"], "path": ["chat", "sessions", ":id", "escalate"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics & Insights",
+      "item": [
+        {
+          "name": "Get KPIs Overview",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/analytics/overview", "host": ["{{baseUrl}}"], "path": ["analytics", "overview"] }
+          }
+        },
+        {
+          "name": "Generate AI Insight Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"period_start\": \"2025-01-01\",\n  \"period_end\": \"2025-01-31\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/insights/generate", "host": ["{{baseUrl}}"], "path": ["insights", "generate"] }
+          }
+        }
+      ]
+    }
+  ]
+}

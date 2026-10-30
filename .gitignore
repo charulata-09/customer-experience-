@@ -1,0 +1,114 @@
+# ==============================================================================
+# Git Ignore Rules — CX Copilot
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Environment & Secret Credentials (NEVER COMMIT SECRETS)
+# ------------------------------------------------------------------------------
+.env
+.env.*
+*.env
+*.env.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Always allow committing environment template examples
+!.env.example
+!frontend/.env.example
+!backend/.env.example
+
+# ------------------------------------------------------------------------------
+# 2. Dependencies
+# ------------------------------------------------------------------------------
+node_modules/
+*/node_modules/
+jspm_packages/
+.pnp
+.pnp.js
+
+# ------------------------------------------------------------------------------
+# 3. Production Builds & Compiled Outputs
+# ------------------------------------------------------------------------------
+dist/
+*/dist/
+dist-ssr/
+*/dist-ssr/
+build/
+*/build/
+out/
+*/out/
+.vite/
+*/.vite/
+*.tsbuildinfo
+
+# ------------------------------------------------------------------------------
+# 4. Logs, Diagnostic & Process Files
+# ------------------------------------------------------------------------------
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.pid
+*.seed
+*.pid.lock
+
+# ------------------------------------------------------------------------------
+# 5. Testing & Code Coverage Reports
+# ------------------------------------------------------------------------------
+coverage/
+*/coverage/
+.nyc_output/
+*.lcov
+vitest.config.*.timestamp-*
+
+# ------------------------------------------------------------------------------
+# 6. Operating System & Temporary Files
+# ------------------------------------------------------------------------------
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+
+# Temp files
+*.tmp
+*.temp
+
+# ------------------------------------------------------------------------------
+# 7. IDE, Editor & Tool Caches
+# ------------------------------------------------------------------------------
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.bak
+.eslintcache
+.stylelintcache
+.prettiercache
+.cache/
